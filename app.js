@@ -4,12 +4,16 @@ const http = require('http');
 const { port, nodEnv } = require('./config/index');
 const { connectToDb } = require('./config/database');
 const passport = require('passport');
+var cors = require('cors')
 
 // Middlewares
 const errorHandler = require('./middlewares/handlerError.middleware')
 
 const app = express();
 const PORT = port || 4000;
+
+//Cors
+app.use(cors())
 
 connectToDb();
 
