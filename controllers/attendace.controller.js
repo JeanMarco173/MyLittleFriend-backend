@@ -1,34 +1,27 @@
-const attendanceService = require('../services/attendace.services');
+const attendanceService = require('../services/attendace.services.js');
+const asyncHandler =  require('../middlewares/asyncHandler.middleware.js');
 const { validationResult } = require('express-validator');
 
-const registerAttendace = async (req, res, next) => {
+const registerAttendace = asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.status(403).json({
-            message: errors,
-            status: 'Failed',
-            data: {}
-        });
+        return next(errors)
     }
 
     const attendaceJson = {...req.body};
     const petId = req.body.pet;
 
-    try {
-        const newAttendance = await attendanceService.register(attendaceJson, petId);
+    const newAttendance = await attendanceService.register(attendaceJson, petId);
+    if(!newAttendance.errors){
         res.status(200).json({
             message: 'The attendance was successfully registered.',
             status: 'OK',
             data: newAttendance
         });
-    } catch (error) {
-        res.status(503).json({
-            message: 'The attendace could not be registered. Please try again.',
-            status: 'Failed',
-            data: err
-        });
+    }else{
+        throw new Error(newAttendance)
     }
-};
+})
 
 const getHistoryByPet = async (req, res, next) => {
     const petId = req.params.petId;
