@@ -20,8 +20,18 @@ const customerService = {
     },
     async findById(id) {
         try {
-            const customer = Customer.findById(id).select({ __v: 0, password: 0 });
+            const customer = await Customer.findById(id).select({ __v: 0, password: 0 });
             return customer;
+        } catch (error) {
+            return error;
+        }
+    },
+    async putPaymenthId(customerId, paymentId) {
+        try {
+            const customer = await Customer.findById(customerId);
+            customer.paymenth_method_id = paymentId;
+            const customerUpdated = await customer.save();
+            return customerUpdated;
         } catch (error) {
             return error;
         }
