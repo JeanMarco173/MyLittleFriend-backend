@@ -11,6 +11,7 @@ const loginCustomer = (req, res) => {
         message: 'The customer was successfully login',
         status: 'OK',
         data: {
+          id: req.user._id,
           full_name: req.user.full_name,
           address: req.user.address,
           avatar_url: req.user.avatar_url,
