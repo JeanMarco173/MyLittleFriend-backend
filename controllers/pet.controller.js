@@ -114,11 +114,19 @@ const findPetsByOwner = async (req, res, next) => {
     try{
         const ownerId = req.params.customerId;
         const pets = await PetServices.getByOwner(ownerId)
-        res.status(200).json({
-            message: 'The pets was successfully list',
-            status: 'OK',
-            data: pets
-        });
+        if(pets.length){
+            res.status(200).json({
+                message: 'The pets was successfully list',
+                status: 'OK',
+                data: pets
+            });
+        }else{
+            res.status(201).json({
+                message: `User doesn't have pets yet.`,
+                status: 'OK',
+                data: []
+            });
+        }
     } catch (error) {
         res.status(503).json({
             message: 'The pest could not be list. Please try again.',

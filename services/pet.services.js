@@ -28,7 +28,7 @@ const PetServices = {
                     await session.endSession();
                     return newPet;
                 } catch (error) {
-                    return erroror;
+                    return error;
                 }
                 /* End transaction */
             } else {
@@ -74,12 +74,12 @@ const PetServices = {
     async getByOwner(ownerId) {
         try{
             const pets = await Pet.find({ owner: ownerId }).select({ __v: 0, medical_history: 0 })
-            if (!pets || !pets.length) {
+            if (!pets) {
                 throw new Error('Could not find pets for the provided owner.')
             }
             return pets;
         } catch (error) {
-            return erroror;
+            return error;
         }
     }
 }
