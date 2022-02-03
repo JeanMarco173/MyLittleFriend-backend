@@ -28,4 +28,39 @@ const registerVeterinary = async (req, res, next) => {
   }
 }
 
-module.exports = { registerVeterinary };
+const listVeterinaries = async (req, res, next) => {
+  try {
+    const veterinaries = await VeterinaryServices.get();
+    res.status(200).json({
+        message: 'The veterinaries was successfully listed',
+        status: 'OK',
+        data: veterinaries
+    });
+  } catch (error) {
+    res.status(503).json({
+        message: 'The veterinaries could not be listed. Please try again.',
+        status: 'Failed',
+        data: err
+    });
+  }
+}
+
+const findVeterinary = async (req, res, next) => {
+  try {
+    const veterinaryId = req.params.veterinaryId;
+    const veterinary = await VeterinaryServices.getById(veterinaryId);
+    res.status(200).json({
+        message: 'The veterinary was successfully listed',
+        status: 'OK',
+        data: veterinary
+    });
+  } catch (error) {
+    res.status(503).json({
+        message: 'The veterinary could not be listed. Please try again.',
+        status: 'Failed',
+        data: err
+    });
+  }
+}
+
+module.exports = { registerVeterinary, listVeterinaries, findVeterinary };
